@@ -6,40 +6,40 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ## Phase 1: Project Setup and Scaffolding
 
-- [ ] **1.1 Install dev dependencies** -- Add `typescript`, `vitest`, `eslint`, `@types/node`, `zod`, and `@sinclair/typebox` as dev dependencies. Configure `zod` as an optional peer dependency (`^3.0.0`). | Status: not_done
-- [ ] **1.2 Configure vitest** -- Add vitest configuration (either in `vitest.config.ts` or within `package.json`). Ensure test runner discovers files matching `src/__tests__/**/*.test.ts`. | Status: not_done
-- [ ] **1.3 Configure eslint** -- Set up eslint with TypeScript support. Ensure `npm run lint` works against `src/`. | Status: not_done
-- [ ] **1.4 Create source directory structure** -- Create all directories specified in section 17 of the spec: `src/detection/`, `src/validation/`, `src/coercion/`, `src/strategies/`, `src/violations/`, and `src/__tests__/` with its subdirectories (`detection/`, `validation/`, `coercion/`, `strategies/`, `violations/`, `integration/`, `fixtures/`). | Status: not_done
-- [ ] **1.5 Create placeholder source files** -- Create empty/stub files for all source modules listed in section 17: `types.ts`, `guard.ts`, `validate.ts`, `guard-tools.ts`, `create-guard.ts`, `from-mcp-tool.ts`, and all subdirectory `index.ts` files. This ensures imports resolve from day one. | Status: not_done
-- [ ] **1.6 Verify build pipeline** -- Run `npm run build` (tsc) and ensure it compiles successfully with the empty stubs. Fix any tsconfig issues. | Status: not_done
+- [x] **1.1 Install dev dependencies** -- Add `typescript`, `vitest`, `eslint`, `@types/node`, `zod`, and `@sinclair/typebox` as dev dependencies. Configure `zod` as an optional peer dependency (`^3.0.0`). | Status: done
+- [x] **1.2 Configure vitest** -- Add vitest configuration (either in `vitest.config.ts` or within `package.json`). Ensure test runner discovers files matching `src/__tests__/**/*.test.ts`. | Status: done
+- [x] **1.3 Configure eslint** -- Set up eslint with TypeScript support. Ensure `npm run lint` works against `src/`. | Status: done
+- [x] **1.4 Create source directory structure** -- Create all directories specified in section 17 of the spec: `src/detection/`, `src/validation/`, `src/coercion/`, `src/strategies/`, `src/violations/`, and `src/__tests__/` with its subdirectories (`detection/`, `validation/`, `coercion/`, `strategies/`, `violations/`, `integration/`, `fixtures/`). | Status: done
+- [x] **1.5 Create placeholder source files** -- Create empty/stub files for all source modules listed in section 17: `types.ts`, `guard.ts`, `validate.ts`, `guard-tools.ts`, `create-guard.ts`, `from-mcp-tool.ts`, and all subdirectory `index.ts` files. This ensures imports resolve from day one. | Status: done
+- [x] **1.6 Verify build pipeline** -- Run `npm run build` (tsc) and ensure it compiles successfully with the empty stubs. Fix any tsconfig issues. | Status: done
 
 ---
 
 ## Phase 2: Type Definitions (`src/types.ts`)
 
-- [ ] **2.1 Define `ViolationSeverity` type** -- `type ViolationSeverity = 'error' | 'warning'` as specified in section 9. | Status: not_done
-- [ ] **2.2 Define `ViolationCode` type** -- `type ViolationCode = 'WRONG_TYPE' | 'MISSING_REQUIRED' | 'UNKNOWN_FIELD' | 'CONSTRAINT_VIOLATION' | 'ENUM_MISMATCH' | 'PATTERN_MISMATCH' | 'COERCED'` as specified in section 9. | Status: not_done
-- [ ] **2.3 Define `Violation` interface** -- Include all fields: `path`, `severity`, `code`, `expected`, `received`, `receivedValue?`, `coercedValue?`, `message`, `llmMessage` as specified in section 9. | Status: not_done
-- [ ] **2.4 Define `ValidationResult<T>` discriminated union** -- Success case: `{ success: true; data: T; warnings: Violation[] }`. Failure case: `{ success: false; violations: Violation[] }`. | Status: not_done
-- [ ] **2.5 Define `ValidationError` class** -- Extends `Error` with `violations: Violation[]`, `toolName?: string`, and formatted `message` summarizing violations. | Status: not_done
-- [ ] **2.6 Define `LLMValidationError` interface** -- `{ error: true; code: 'INVALID_TOOL_OUTPUT'; message: string; violations: Array<{ path: string; message: string }>; suggestion: string }`. | Status: not_done
-- [ ] **2.7 Define `FailureStrategy` type** -- `'throw' | 'fallback' | 'error-result' | 'coerce-and-warn' | 'strip-extra'`. | Status: not_done
-- [ ] **2.8 Define `CoercionConfig` interface** -- `{ stringToNumber: boolean; stringToBoolean: boolean; stringToJson: boolean; numberToString: boolean; nullToDefault: boolean }`. | Status: not_done
-- [ ] **2.9 Define `GuardOptions<T>` interface** -- Include all fields from section 9: `onInvalid`, `fallbackValue`, `coercionFallback`, `coercion`, `fieldStrategies`, `fieldFallbacks`, `jsonSchemaValidator`, `toolName`, `onValidationPass`, `onValidationFail`, `onCoercion`. | Status: not_done
-- [ ] **2.10 Define `Guard<T>` interface** -- `{ validate(value: unknown): ValidationResult<T>; wrap<TArgs>(toolFn): (args: TArgs) => Promise<T>; readonly schema: unknown; readonly options: GuardOptions<T> }`. | Status: not_done
-- [ ] **2.11 Define `GuardToolsOptions<T>` interface** -- Extends `GuardOptions<T>` with `toolOptions?: Record<string, Partial<GuardOptions>>`. | Status: not_done
-- [ ] **2.12 Define helper types for schema inputs** -- Type aliases or generic types for `ZodSchema`, `JSONSchema`, `TypeBoxSchema` to use in function signatures. | Status: not_done
-- [ ] **2.13 Export all types from `src/types.ts`** -- Ensure all types are exported and re-exported from `src/index.ts`. | Status: not_done
+- [x] **2.1 Define `ViolationSeverity` type** -- `type ViolationSeverity = 'error' | 'warning'` as specified in section 9. | Status: done
+- [x] **2.2 Define `ViolationCode` type** -- `type ViolationCode = 'WRONG_TYPE' | 'MISSING_REQUIRED' | 'UNKNOWN_FIELD' | 'CONSTRAINT_VIOLATION' | 'ENUM_MISMATCH' | 'PATTERN_MISMATCH' | 'COERCED'` as specified in section 9. | Status: done
+- [x] **2.3 Define `Violation` interface** -- Include all fields: `path`, `severity`, `code`, `expected`, `received`, `receivedValue?`, `coercedValue?`, `message`, `llmMessage` as specified in section 9. | Status: done
+- [x] **2.4 Define `ValidationResult<T>` discriminated union** -- Success case: `{ success: true; data: T; warnings: Violation[] }`. Failure case: `{ success: false; violations: Violation[] }`. | Status: done
+- [x] **2.5 Define `ValidationError` class** -- Extends `Error` with `violations: Violation[]`, `toolName?: string`, and formatted `message` summarizing violations. | Status: done
+- [x] **2.6 Define `LLMValidationError` interface** -- `{ error: true; code: 'INVALID_TOOL_OUTPUT'; message: string; violations: Array<{ path: string; message: string }>; suggestion: string }`. | Status: done
+- [x] **2.7 Define `FailureStrategy` type** -- `'throw' | 'fallback' | 'error-result' | 'coerce-and-warn' | 'strip-extra'`. | Status: done
+- [x] **2.8 Define `CoercionConfig` interface** -- `{ stringToNumber: boolean; stringToBoolean: boolean; stringToJson: boolean; numberToString: boolean; nullToDefault: boolean }`. | Status: done
+- [x] **2.9 Define `GuardOptions<T>` interface** -- Include all fields from section 9: `onInvalid`, `fallbackValue`, `coercionFallback`, `coercion`, `fieldStrategies`, `fieldFallbacks`, `jsonSchemaValidator`, `toolName`, `onValidationPass`, `onValidationFail`, `onCoercion`. | Status: done
+- [x] **2.10 Define `Guard<T>` interface** -- `{ validate(value: unknown): ValidationResult<T>; wrap<TArgs>(toolFn): (args: TArgs) => Promise<T>; readonly schema: unknown; readonly options: GuardOptions<T> }`. | Status: done
+- [x] **2.11 Define `GuardToolsOptions<T>` interface** -- Extends `GuardOptions<T>` with `toolOptions?: Record<string, Partial<GuardOptions>>`. | Status: done
+- [x] **2.12 Define helper types for schema inputs** -- Type aliases or generic types for `ZodSchema`, `JSONSchema`, `TypeBoxSchema` to use in function signatures. | Status: done
+- [x] **2.13 Export all types from `src/types.ts`** -- Ensure all types are exported and re-exported from `src/index.ts`. | Status: done
 
 ---
 
 ## Phase 3: Schema Detection (`src/detection/`)
 
-- [ ] **3.1 Implement Zod schema detection (`src/detection/zod.ts`)** -- Detect Zod schemas by checking for `_def` property and `safeParse` method. Export an `isZodSchema(schema: unknown): boolean` function. | Status: not_done
-- [ ] **3.2 Implement JSON Schema detection (`src/detection/json-schema.ts`)** -- Detect JSON Schema objects by checking for `type` property or `$schema` property. Export an `isJSONSchema(schema: unknown): boolean` function. | Status: not_done
-- [ ] **3.3 Implement TypeBox schema detection (`src/detection/typebox.ts`)** -- Detect TypeBox schemas by checking for `Symbol.for('TypeBox.Kind')` symbol property. Export an `isTypeBoxSchema(schema: unknown): boolean` function. | Status: not_done
-- [ ] **3.4 Implement unified detection dispatcher (`src/detection/index.ts`)** -- Export a `detectSchema(schema: unknown)` function that returns a discriminated result indicating the schema type (`'zod' | 'json-schema' | 'typebox'`). Priority order: Zod first, then TypeBox, then JSON Schema. Throw `TypeError` if no format matches. Detection is performed once and cached. | Status: not_done
-- [ ] **3.5 Write schema detection tests (`src/__tests__/detection/schema-detection.test.ts`)** -- Test: Zod schema detected by `_def` and `safeParse`. JSON Schema detected by `type` property. JSON Schema detected by `$schema` property. TypeBox detected by `Kind` symbol. Unknown schema throws `TypeError`. Schema with both Zod markers and JSON Schema `type`: Zod takes precedence. | Status: not_done
+- [x] **3.1 Implement Zod schema detection (`src/detection/zod.ts`)** -- Detect Zod schemas by checking for `_def` property and `safeParse` method. Export an `isZodSchema(schema: unknown): boolean` function. | Status: done
+- [x] **3.2 Implement JSON Schema detection (`src/detection/json-schema.ts`)** -- Detect JSON Schema objects by checking for `type` property or `$schema` property. Export an `isJSONSchema(schema: unknown): boolean` function. | Status: done
+- [x] **3.3 Implement TypeBox schema detection (`src/detection/typebox.ts`)** -- Detect TypeBox schemas by checking for `Symbol.for('TypeBox.Kind')` symbol property. Export an `isTypeBoxSchema(schema: unknown): boolean` function. | Status: done
+- [x] **3.4 Implement unified detection dispatcher (`src/detection/index.ts`)** -- Export a `detectSchema(schema: unknown)` function that returns a discriminated result indicating the schema type (`'zod' | 'json-schema' | 'typebox'`). Priority order: Zod first, then TypeBox, then JSON Schema. Throw `TypeError` if no format matches. Detection is performed once and cached. | Status: done
+- [x] **3.5 Write schema detection tests (`src/__tests__/detection/schema-detection.test.ts`)** -- Test: Zod schema detected by `_def` and `safeParse`. JSON Schema detected by `type` property. JSON Schema detected by `$schema` property. TypeBox detected by `Kind` symbol. Unknown schema throws `TypeError`. Schema with both Zod markers and JSON Schema `type`: Zod takes precedence. | Status: done
 
 ---
 
