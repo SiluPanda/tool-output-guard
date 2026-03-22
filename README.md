@@ -3,6 +3,7 @@
 Runtime validation for tool execution results against Zod, JSON Schema, and TypeBox schemas.
 
 [![npm version](https://img.shields.io/npm/v/tool-output-guard.svg)](https://www.npmjs.com/package/tool-output-guard)
+[![npm downloads](https://img.shields.io/npm/dt/tool-output-guard.svg)](https://www.npmjs.com/package/tool-output-guard)
 [![license](https://img.shields.io/npm/l/tool-output-guard.svg)](https://github.com/SiluPanda/tool-output-guard/blob/master/LICENSE)
 [![node](https://img.shields.io/node/v/tool-output-guard.svg)](https://nodejs.org)
 [![types](https://img.shields.io/npm/types/tool-output-guard.svg)](https://www.npmjs.com/package/tool-output-guard)
