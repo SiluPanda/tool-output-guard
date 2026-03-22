@@ -45,43 +45,43 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ## Phase 4: Violation Infrastructure (`src/violations/`)
 
-- [ ] **4.1 Implement JSON path utilities (`src/violations/paths.ts`)** -- Utility functions: build path strings (`$.address.city`, `$.results[0].score`), append property key to path, append array index to path. Root is `$`. Object keys use dot notation, array indices use bracket notation. | Status: not_done
-- [ ] **4.2 Implement violation builder (`src/violations/builder.ts`)** -- Factory function to create `Violation` objects. Accept parameters for all fields. Truncate `receivedValue` to 200 characters for large values (strings, serialized objects). | Status: not_done
-- [ ] **4.3 Implement message formatting (`src/violations/messages.ts`)** -- Generate human-readable `message` strings (e.g., `Expected number at $.temperature, received string "72"`). Generate LLM-readable `llmMessage` strings (shorter, action-oriented). Generate LLM-formatted violation summaries for the `error-result` strategy. | Status: not_done
-- [ ] **4.4 Write violation path tests (`src/__tests__/violations/paths.test.ts`)** -- Test path correctness for: root fields, nested fields, array elements, deeply nested paths (10+ levels). | Status: not_done
-- [ ] **4.5 Write violation message tests (`src/__tests__/violations/messages.test.ts`)** -- Test human-readable message formatting. Test LLM-readable message formatting. Test violation summary formatting. | Status: not_done
-- [ ] **4.6 Write violation code tests (`src/__tests__/violations/codes.test.ts`)** -- Test that each violation type maps to the correct `ViolationCode`: `WRONG_TYPE`, `MISSING_REQUIRED`, `UNKNOWN_FIELD`, `CONSTRAINT_VIOLATION`, `ENUM_MISMATCH`, `PATTERN_MISMATCH`, `COERCED`. | Status: not_done
+- [x] **4.1 Implement JSON path utilities (`src/violations/paths.ts`)** -- Utility functions: build path strings (`$.address.city`, `$.results[0].score`), append property key to path, append array index to path. Root is `$`. Object keys use dot notation, array indices use bracket notation. | Status: done
+- [x] **4.2 Implement violation builder (`src/violations/builder.ts`)** -- Factory function to create `Violation` objects. Accept parameters for all fields. Truncate `receivedValue` to 200 characters for large values (strings, serialized objects). | Status: done
+- [x] **4.3 Implement message formatting (`src/violations/messages.ts`)** -- Generate human-readable `message` strings (e.g., `Expected number at $.temperature, received string "72"`). Generate LLM-readable `llmMessage` strings (shorter, action-oriented). Generate LLM-formatted violation summaries for the `error-result` strategy. | Status: done
+- [x] **4.4 Write violation path tests (`src/__tests__/violations/paths.test.ts`)** -- Test path correctness for: root fields, nested fields, array elements, deeply nested paths (10+ levels). | Status: done
+- [x] **4.5 Write violation message tests (`src/__tests__/violations/messages.test.ts`)** -- Test human-readable message formatting. Test LLM-readable message formatting. Test violation summary formatting. | Status: done
+- [x] **4.6 Write violation code tests (`src/__tests__/violations/codes.test.ts`)** -- Test that each violation type maps to the correct `ViolationCode`: `WRONG_TYPE`, `MISSING_REQUIRED`, `UNKNOWN_FIELD`, `CONSTRAINT_VIOLATION`, `ENUM_MISMATCH`, `PATTERN_MISMATCH`, `COERCED`. | Status: done
 
 ---
 
 ## Phase 5: Zod Validation (`src/validation/zod-validator.ts`)
 
-- [ ] **5.1 Implement Zod validation bridge** -- Call `schema.safeParse(value)`. Map Zod error issues to `Violation` objects with correct `path`, `code`, `expected`, `received`, `receivedValue`, `message`, and `llmMessage`. | Status: not_done
-- [ ] **5.2 Map Zod error codes to ViolationCodes** -- Map Zod's `invalid_type` to `WRONG_TYPE`, `invalid_enum_value` to `ENUM_MISMATCH`, custom refinements to `CONSTRAINT_VIOLATION`, etc. | Status: not_done
-- [ ] **5.3 Handle Zod path format** -- Convert Zod's path format (array of strings/numbers) to JSON path string format (`$.field.nested[0]`). | Status: not_done
-- [ ] **5.4 Write Zod validation tests (`src/__tests__/validation/zod-validation.test.ts`)** -- Test: valid data passes, wrong type fails with `WRONG_TYPE`, missing required field fails with `MISSING_REQUIRED`, extra field detection with strict mode, nested object validation, array element validation, Zod refinements (`.min()`, `.max()`, `.email()`, `.url()`), Zod enums, Zod unions, violation paths correct for nested fields. | Status: not_done
+- [x] **5.1 Implement Zod validation bridge** -- Call `schema.safeParse(value)`. Map Zod error issues to `Violation` objects with correct `path`, `code`, `expected`, `received`, `receivedValue`, `message`, and `llmMessage`. | Status: done
+- [x] **5.2 Map Zod error codes to ViolationCodes** -- Map Zod's `invalid_type` to `WRONG_TYPE`, `invalid_enum_value` to `ENUM_MISMATCH`, custom refinements to `CONSTRAINT_VIOLATION`, etc. | Status: done
+- [x] **5.3 Handle Zod path format** -- Convert Zod's path format (array of strings/numbers) to JSON path string format (`$.field.nested[0]`). | Status: done
+- [x] **5.4 Write Zod validation tests (`src/__tests__/validation/zod-validation.test.ts`)** -- Test: valid data passes, wrong type fails with `WRONG_TYPE`, missing required field fails with `MISSING_REQUIRED`, extra field detection with strict mode, nested object validation, array element validation, Zod refinements (`.min()`, `.max()`, `.email()`, `.url()`), Zod enums, Zod unions, violation paths correct for nested fields. | Status: done
 
 ---
 
 ## Phase 6: Built-in JSON Schema Validator (`src/validation/json-schema-validator.ts`)
 
 - [ ] **6.1 Implement `type` keyword validation** -- Support all seven JSON Schema types: `string`, `number`, `integer`, `boolean`, `null`, `object`, `array`. | Status: not_done
-- [ ] **6.2 Implement `properties` and `required` keywords** -- Validate object properties against their sub-schemas. Report `MISSING_REQUIRED` for missing required fields. | Status: not_done
+- [x] **6.2 Implement `properties` and `required` keywords** -- Validate object properties against their sub-schemas. Report `MISSING_REQUIRED` for missing required fields. | Status: done
 - [ ] **6.3 Implement `additionalProperties` keyword** -- When `additionalProperties: false`, report `UNKNOWN_FIELD` for properties not listed in `properties`. When `additionalProperties` is a schema, validate additional properties against that schema. | Status: not_done
 - [ ] **6.4 Implement `items` keyword** -- Support single-schema items (all array elements validated against one schema) and tuple validation (each element validated against its positional schema). | Status: not_done
-- [ ] **6.5 Implement `minItems` / `maxItems` keywords** -- Validate array length constraints. | Status: not_done
-- [ ] **6.6 Implement `enum` and `const` keywords** -- Validate value is one of the allowed enum values. Validate value equals the const value. Report `ENUM_MISMATCH` on failure. | Status: not_done
-- [ ] **6.7 Implement `minimum` / `maximum` / `exclusiveMinimum` / `exclusiveMaximum` keywords** -- Validate numeric range constraints. Report `CONSTRAINT_VIOLATION` on failure. | Status: not_done
+- [x] **6.5 Implement `minItems` / `maxItems` keywords** -- Validate array length constraints. | Status: done
+- [x] **6.6 Implement `enum` and `const` keywords** -- Validate value is one of the allowed enum values. Validate value equals the const value. Report `ENUM_MISMATCH` on failure. | Status: done
+- [x] **6.7 Implement `minimum` / `maximum` / `exclusiveMinimum` / `exclusiveMaximum` keywords** -- Validate numeric range constraints. Report `CONSTRAINT_VIOLATION` on failure. | Status: done
 - [ ] **6.8 Implement `multipleOf` keyword** -- Validate that a number is a multiple of the given value. | Status: not_done
-- [ ] **6.9 Implement `minLength` / `maxLength` keywords** -- Validate string length constraints. Report `CONSTRAINT_VIOLATION` on failure. | Status: not_done
-- [ ] **6.10 Implement `pattern` keyword** -- Validate string matches the given regex pattern. Report `PATTERN_MISMATCH` on failure. | Status: not_done
+- [x] **6.9 Implement `minLength` / `maxLength` keywords** -- Validate string length constraints. Report `CONSTRAINT_VIOLATION` on failure. | Status: done
+- [x] **6.10 Implement `pattern` keyword** -- Validate string matches the given regex pattern. Report `PATTERN_MISMATCH` on failure. | Status: done
 - [ ] **6.11 Implement `format` keyword** -- Validate format hints: `date-time`, `email`, `uri` using regex patterns. | Status: not_done
-- [ ] **6.12 Implement `anyOf` / `oneOf` / `allOf` keywords** -- `anyOf`: value must match at least one sub-schema. `oneOf`: value must match exactly one sub-schema. `allOf`: value must match all sub-schemas. | Status: not_done
+- [x] **6.12 Implement `anyOf` / `oneOf` / `allOf` keywords** -- `anyOf`: value must match at least one sub-schema. `oneOf`: value must match exactly one sub-schema. `allOf`: value must match all sub-schemas. | Status: done
 - [ ] **6.13 Implement `not` keyword** -- Value must NOT match the given sub-schema. | Status: not_done
 - [ ] **6.14 Implement `$ref` keyword (local references only)** -- Resolve local JSON Pointer references (e.g., `#/definitions/Foo`). Do not support remote `$ref`. | Status: not_done
 - [ ] **6.15 Implement `default` keyword support** -- Record the default value for use by null-to-default coercion. | Status: not_done
-- [ ] **6.16 Implement unified validation dispatcher (`src/validation/index.ts`)** -- Route validation to Zod validator or JSON Schema validator based on detected schema type. Accept optional custom `jsonSchemaValidator` function. | Status: not_done
-- [ ] **6.17 Write JSON Schema validation tests (`src/__tests__/validation/json-schema-validation.test.ts`)** -- Test each keyword independently: `type` (all seven types), `properties`, `required`, `additionalProperties`, `items`, `enum`, `const`, `minimum`/`maximum`, `exclusiveMinimum`/`exclusiveMaximum`, `multipleOf`, `minLength`/`maxLength`, `minItems`/`maxItems`, `pattern`, `format`, `anyOf`/`oneOf`/`allOf`, `not`, `$ref`. Test combined keywords. Test both draft-07 and draft-2020-12 keywords. Verify violation paths and messages are correct. | Status: not_done
+- [x] **6.16 Implement unified validation dispatcher (`src/validation/index.ts`)** -- Route validation to Zod validator or JSON Schema validator based on detected schema type. Accept optional custom `jsonSchemaValidator` function. | Status: done
+- [x] **6.17 Write JSON Schema validation tests (`src/__tests__/validation/json-schema-validation.test.ts`)** -- Test each keyword independently: `type` (all seven types), `properties`, `required`, `additionalProperties`, `items`, `enum`, `const`, `minimum`/`maximum`, `exclusiveMinimum`/`exclusiveMaximum`, `multipleOf`, `minLength`/`maxLength`, `minItems`/`maxItems`, `pattern`, `format`, `anyOf`/`oneOf`/`allOf`, `not`, `$ref`. Test combined keywords. Test both draft-07 and draft-2020-12 keywords. Verify violation paths and messages are correct. | Status: done
 - [ ] **6.18 Write TypeBox validation tests (`src/__tests__/validation/typebox-validation.test.ts`)** -- Verify TypeBox schemas validate identically to JSON Schema. End-to-end tests with TypeBox Type builder and Static type inference. | Status: not_done
 - [ ] **6.19 Write custom validator tests (`src/__tests__/validation/custom-validator.test.ts`)** -- Test that a custom `jsonSchemaValidator` function is called instead of the built-in. Test that custom validator errors are mapped to `Violation` objects. | Status: not_done
 
@@ -114,13 +114,13 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ## Phase 8: Failure Strategies (`src/strategies/`)
 
-- [ ] **8.1 Implement `throw` strategy (`src/strategies/throw.ts`)** -- Throw a `ValidationError` with the full `Violation[]`, `toolName`, and formatted `message`. This is the default strategy. | Status: not_done
-- [ ] **8.2 Implement `fallback` strategy (`src/strategies/fallback.ts`)** -- Return the preconfigured `fallbackValue`. Validate the fallback value against the schema at guard creation time. Throw `TypeError` synchronously if the fallback does not pass validation. | Status: not_done
-- [ ] **8.3 Implement `error-result` strategy (`src/strategies/error-result.ts`)** -- Return an `LLMValidationError` object with `error: true`, `code: 'INVALID_TOOL_OUTPUT'`, human-readable `message`, summarized `violations` array, and actionable `suggestion`. Format must be compatible with `tool-call-retry`'s `LLMFormattedError`. | Status: not_done
-- [ ] **8.4 Implement `coerce-and-warn` strategy (`src/strategies/coerce-and-warn.ts`)** -- Run coercion on the raw output. Re-validate the coerced output. If all violations resolved, return coerced value with coercion warnings. If violations remain, fall through to `coercionFallback` strategy (default: `'throw'`). | Status: not_done
-- [ ] **8.5 Implement `strip-extra` strategy (`src/strategies/strip-extra.ts`)** -- Walk the output and remove fields not present in the schema. Preserve valid known fields. Do not fix type errors on known fields (those are handled by the global strategy or coercion). | Status: not_done
+- [x] **8.1 Implement `throw` strategy (`src/strategies/throw.ts`)** -- Throw a `ValidationError` with the full `Violation[]`, `toolName`, and formatted `message`. This is the default strategy. | Status: done
+- [x] **8.2 Implement `fallback` strategy (`src/strategies/fallback.ts`)** -- Return the preconfigured `fallbackValue`. Validate the fallback value against the schema at guard creation time. Throw `TypeError` synchronously if the fallback does not pass validation. | Status: done
+- [x] **8.3 Implement `error-result` strategy (`src/strategies/error-result.ts`)** -- Return an `LLMValidationError` object with `error: true`, `code: 'INVALID_TOOL_OUTPUT'`, human-readable `message`, summarized `violations` array, and actionable `suggestion`. Format must be compatible with `tool-call-retry`'s `LLMFormattedError`. | Status: done
+- [x] **8.4 Implement `coerce-and-warn` strategy (`src/strategies/coerce-and-warn.ts`)** -- Run coercion on the raw output. Re-validate the coerced output. If all violations resolved, return coerced value with coercion warnings. If violations remain, fall through to `coercionFallback` strategy (default: `'throw'`). | Status: done
+- [x] **8.5 Implement `strip-extra` strategy (`src/strategies/strip-extra.ts`)** -- Walk the output and remove fields not present in the schema. Preserve valid known fields. Do not fix type errors on known fields (those are handled by the global strategy or coercion). | Status: done
 - [ ] **8.6 Implement per-field strategies** -- Evaluate `fieldStrategies` before the global strategy. For each violation, check if its JSON path matches a `fieldStrategies` key. If matched and the field strategy resolves the violation, skip the global strategy for that field. Support `fieldFallbacks` for per-field fallback values. | Status: not_done
-- [ ] **8.7 Implement failure strategy dispatcher (`src/strategies/index.ts`)** -- Route to the correct strategy based on the `onInvalid` option. Handle the dispatch logic for per-field strategies before global. | Status: not_done
+- [x] **8.7 Implement failure strategy dispatcher (`src/strategies/index.ts`)** -- Route to the correct strategy based on the `onInvalid` option. Handle the dispatch logic for per-field strategies before global. | Status: done
 - [ ] **8.8 Write `throw` strategy tests (`src/__tests__/strategies/throw.test.ts`)** -- Test: `ValidationError` thrown with correct `violations`, `toolName`, and `message`. Error is instance of both `ValidationError` and `Error`. | Status: not_done
 - [ ] **8.9 Write `fallback` strategy tests (`src/__tests__/strategies/fallback.test.ts`)** -- Test: fallback value returned on validation failure. Fallback validated at creation time. Invalid fallback throws `TypeError` at creation time. | Status: not_done
 - [ ] **8.10 Write `error-result` strategy tests (`src/__tests__/strategies/error-result.test.ts`)** -- Test: `LLMValidationError` returned with correct structure. `error` is `true`, `code` is `'INVALID_TOOL_OUTPUT'`. `violations` array summarizes all failures. `suggestion` is actionable. | Status: not_done
@@ -134,30 +134,30 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ### 9A: `validate` function (`src/validate.ts`)
 
-- [ ] **9A.1 Implement `validate(value, schema, options?)` function** -- Standalone validation: detect schema type, optionally run coercion, validate against schema, return `ValidationResult<T>`. No function wrapping -- just validates a value. | Status: not_done
+- [x] **9A.1 Implement `validate(value, schema, options?)` function** -- Standalone validation: detect schema type, optionally run coercion, validate against schema, return `ValidationResult<T>`. No function wrapping -- just validates a value. | Status: done
 - [ ] **9A.2 Handle coercion in `validate`** -- If `coercion` is enabled in options, run coercion pipeline before validation. Include coercion warnings in the result. | Status: not_done
 - [ ] **9A.3 Handle failure strategies in `validate`** -- Apply the configured `onInvalid` strategy when validation fails. For `throw`, throw `ValidationError`. For `fallback`, return the fallback value. For `error-result`, return `LLMValidationError`. | Status: not_done
 
 ### 9B: `guard` function (`src/guard.ts`)
 
-- [ ] **9B.1 Implement `guard(toolFn, schema, options?)` function** -- Wrap an async tool function. Return a new function with the same input signature. On invocation: call the tool function, validate the resolved output, apply failure strategy if needed, return the validated value. | Status: not_done
-- [ ] **9B.2 Preserve tool function signature** -- The guarded function must accept the same arguments as the original. TypeScript generics must flow the input type through. | Status: not_done
-- [ ] **9B.3 Handle tool function errors** -- If the tool function throws, the error propagates unchanged. The guard does not catch execution errors -- only validates successful return values. | Status: not_done
-- [ ] **9B.4 Fire event hooks in `guard`** -- Call `onValidationPass` on success (with data and warnings). Call `onValidationFail` on failure (with violations and raw output). Call `onCoercion` for each coerced field. Events are synchronous -- hook errors propagate. | Status: not_done
-- [ ] **9B.5 Cache schema detection in `guard`** -- Detect schema type once at guard creation time, not on every invocation. | Status: not_done
+- [x] **9B.1 Implement `guard(toolFn, schema, options?)` function** -- Wrap an async tool function. Return a new function with the same input signature. On invocation: call the tool function, validate the resolved output, apply failure strategy if needed, return the validated value. | Status: done
+- [x] **9B.2 Preserve tool function signature** -- The guarded function must accept the same arguments as the original. TypeScript generics must flow the input type through. | Status: done
+- [x] **9B.3 Handle tool function errors** -- If the tool function throws, the error propagates unchanged. The guard does not catch execution errors -- only validates successful return values. | Status: done
+- [x] **9B.4 Fire event hooks in `guard`** -- Call `onValidationPass` on success (with data and warnings). Call `onValidationFail` on failure (with violations and raw output). Call `onCoercion` for each coerced field. Events are synchronous -- hook errors propagate. | Status: done
+- [x] **9B.5 Cache schema detection in `guard`** -- Detect schema type once at guard creation time, not on every invocation. | Status: done
 
 ### 9C: `guardTools` function (`src/guard-tools.ts`)
 
-- [ ] **9C.1 Implement `guardTools(tools, schemas, options?)` function** -- Accept a record of tool functions and a record of schemas with matching keys. Guard each tool with its corresponding schema. Return a record with the same keys, each function guarded. | Status: not_done
-- [ ] **9C.2 Implement per-tool option overrides** -- Merge global options with `toolOptions[toolName]` for each tool. Per-tool options have highest priority, then global options, then defaults. | Status: not_done
-- [ ] **9C.3 Validate schema map completeness** -- Every key in `tools` should have a matching key in `schemas`. Decide on behavior for tools without schemas (spec section 14 says "tool passes through unguarded"). | Status: not_done
+- [x] **9C.1 Implement `guardTools(tools, schemas, options?)` function** -- Accept a record of tool functions and a record of schemas with matching keys. Guard each tool with its corresponding schema. Return a record with the same keys, each function guarded. | Status: done
+- [x] **9C.2 Implement per-tool option overrides** -- Merge global options with `toolOptions[toolName]` for each tool. Per-tool options have highest priority, then global options, then defaults. | Status: done
+- [x] **9C.3 Validate schema map completeness** -- Every key in `tools` should have a matching key in `schemas`. Decide on behavior for tools without schemas (spec section 14 says "tool passes through unguarded"). | Status: done
 
 ### 9D: `createGuard` factory (`src/create-guard.ts`)
 
-- [ ] **9D.1 Implement `createGuard(schema, options?)` factory** -- Return a `Guard<T>` instance with `validate` and `wrap` methods, plus `schema` and `options` properties. | Status: not_done
-- [ ] **9D.2 Implement `Guard.validate` method** -- Validate a value against the guard's schema using the guard's options. Return `ValidationResult<T>`. | Status: not_done
-- [ ] **9D.3 Implement `Guard.wrap` method** -- Wrap a tool function with the guard's schema and options. Equivalent to calling `guard(toolFn, schema, options)`. | Status: not_done
-- [ ] **9D.4 Ensure reusability** -- Same guard instance can be applied to multiple tool functions or used to validate multiple values. No per-invocation state leaks between calls. | Status: not_done
+- [x] **9D.1 Implement `createGuard(schema, options?)` factory** -- Return a `Guard<T>` instance with `validate` and `wrap` methods, plus `schema` and `options` properties. | Status: done
+- [x] **9D.2 Implement `Guard.validate` method** -- Validate a value against the guard's schema using the guard's options. Return `ValidationResult<T>`. | Status: done
+- [x] **9D.3 Implement `Guard.wrap` method** -- Wrap a tool function with the guard's schema and options. Equivalent to calling `guard(toolFn, schema, options)`. | Status: done
+- [x] **9D.4 Ensure reusability** -- Same guard instance can be applied to multiple tool functions or used to validate multiple values. No per-invocation state leaks between calls. | Status: done
 
 ### 9E: `fromMCPTool` function (`src/from-mcp-tool.ts`)
 
@@ -181,8 +181,8 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 ## Phase 11: Public API Exports (`src/index.ts`)
 
 - [ ] **11.1 Export all public functions** -- `guard`, `validate`, `guardTools`, `createGuard`, `fromMCPTool`. | Status: not_done
-- [ ] **11.2 Export all public types** -- `ValidationResult`, `Violation`, `ViolationSeverity`, `ViolationCode`, `ValidationError`, `LLMValidationError`, `FailureStrategy`, `CoercionConfig`, `GuardOptions`, `Guard`, `GuardToolsOptions`. | Status: not_done
-- [ ] **11.3 Ensure no internal modules leak** -- Only the public API is accessible from `import { ... } from 'tool-output-guard'`. Internal modules (detection, validation, coercion, strategies, violations) are not directly importable. | Status: not_done
+- [x] **11.2 Export all public types** -- `ValidationResult`, `Violation`, `ViolationSeverity`, `ViolationCode`, `ValidationError`, `LLMValidationError`, `FailureStrategy`, `CoercionConfig`, `GuardOptions`, `Guard`, `GuardToolsOptions`. | Status: done
+- [x] **11.3 Ensure no internal modules leak** -- Only the public API is accessible from `import { ... } from 'tool-output-guard'`. Internal modules (detection, validation, coercion, strategies, violations) are not directly importable. | Status: done
 
 ---
 
