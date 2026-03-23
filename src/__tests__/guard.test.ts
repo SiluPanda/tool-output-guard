@@ -170,4 +170,43 @@ describe('guard() — strategy: strip-extra', () => {
     expect(result).toEqual({ name: 'Alice' });
     expect((result as Record<string, unknown>)['extra']).toBeUndefined();
   });
+
+  it('coerces uppercase boolean strings (case-insensitive)', async () => {
+    const schema = {
+      type: 'object',
+      properties: {
+        active: { type: 'boolean' },
+      },
+    };
+    const toolFn = async () => ({ active: 'TRUE' });
+    const guarded = guard(toolFn, schema, { onInvalid: 'coerce-and-warn' });
+    const result = await guarded();
+    expect((result as Record<string, unknown>).active).toBe(true);
+  });
+
+  it('validates integer type in JSON Schema', async () => {
+    const schema = {
+      type: 'object',
+      properties: {
+        count: { type: 'integer' },
+      },
+    };
+    const toolFn = async () => ({ count: 42 });
+    const guarded = guard(toolFn, schema);
+    const result = await guarded();
+    expect((result as Record<string, unknown>).count).toBe(42);
+  });
+
+  it('validates number type accepts integers in JSON Schema', async () => {
+    const schema = {
+      type: 'object',
+      properties: {
+        value: { type: 'number' },
+      },
+    };
+    const toolFn = async () => ({ value: 42 });
+    const guarded = guard(toolFn, schema);
+    const result = await guarded();
+    expect((result as Record<string, unknown>).value).toBe(42);
+  });
 });
