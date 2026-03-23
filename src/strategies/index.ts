@@ -36,12 +36,13 @@ function coerceValue(
     }
   }
   if (expectedType === 'boolean' && typeof value === 'string') {
-    if (value === 'true') {
+    const lower = value.toLowerCase();
+    if (lower === 'true') {
       coercions.push(
         buildViolation(
           'COERCED',
           path,
-          `Coerced string "true" to boolean true`,
+          `Coerced string "${value}" to boolean true`,
           'string',
           'boolean',
           'warning',
@@ -51,12 +52,12 @@ function coerceValue(
       );
       return true;
     }
-    if (value === 'false') {
+    if (lower === 'false') {
       coercions.push(
         buildViolation(
           'COERCED',
           path,
-          `Coerced string "false" to boolean false`,
+          `Coerced string "${value}" to boolean false`,
           'string',
           'boolean',
           'warning',

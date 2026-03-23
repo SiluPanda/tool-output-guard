@@ -7,6 +7,9 @@ type JSONSchemaObject = Record<string, unknown>;
 function getType(value: unknown): string {
   if (value === null) return 'null';
   if (Array.isArray(value)) return 'array';
+  if (typeof value === 'number') {
+    return Number.isInteger(value) ? 'integer' : 'number';
+  }
   return typeof value;
 }
 
@@ -21,7 +24,10 @@ function validateValue(
     const expectedType = schema['type'] as string | string[];
     const actualType = getType(data);
     const types = Array.isArray(expectedType) ? expectedType : [expectedType];
-    if (!types.includes(actualType)) {
+    // In JSON Schema, "number" matches both integers and floats
+    const matches = types.includes(actualType) ||
+      (actualType === 'integer' && types.includes('number'));
+    if (!matches) {
       violations.push(
         buildViolation(
           'WRONG_TYPE',
